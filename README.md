@@ -9,5 +9,5 @@ O DevOps é uma cultura que promove a colaboração entre as equipes de desenvol
 O que é SRE?
 Criado pelo Google, o SRE aplica princípios de engenharia de software para resolver problemas de operações. O objetivo central é garantir que os sistemas sejam escaláveis e altamente disponíveis.
 
-Front-End: 
+## Front-End: 
   - Desenvolver um Front-End em React simples com 3 telas.
