@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
 
 
-jobs:
-  build-and-deploy:
+jobs: 
+  docker-check:
    runs-on: ubuntu-latest
    permissions:
     contents: read
