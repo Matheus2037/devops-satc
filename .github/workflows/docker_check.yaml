@@ -31,7 +31,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           args: >
-            -Dsonar.projectKey=matheus2037_devops-satc
+            -Dsonar.projectKey=Matheus2037_devops-satc
             -Dsonar.organization=matheus2037
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.sources=.
