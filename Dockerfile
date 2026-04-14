@@ -1,7 +1,7 @@
 FROM node:20-alpine3.20
 
 RUN apk update && \
-    apk add --no-install-recommends --upgrade zlib && \
+    apk add --no-cache --upgrade busybox ssl_client zlib && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
