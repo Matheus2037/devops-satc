@@ -8,6 +8,8 @@ WORKDIR /app/front-end
 
 RUN npm install
 
+RUN apk upgrade zlib
+
 RUN npm run build
 
 EXPOSE 4173
