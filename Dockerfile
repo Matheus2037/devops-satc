@@ -1,7 +1,7 @@
 FROM node:20-alpine3.20
 
 RUN apk update && \
-    apk add --no-cache --upgrade zlib busybox musl musl-utils && \
+    apk upgrade --no-cache && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /app
