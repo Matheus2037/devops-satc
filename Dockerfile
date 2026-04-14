@@ -1,18 +1,22 @@
-FROM node:20-alpine:3.20.2
+FROM node:20-alpine3.20
 
-RUN apt-get update && apt-get install -y --no-install-recommends zlib1g && rm -rf /var/lib/apt/lists/*
+RUN apk update && \
+    apk add --no-install-recommends --upgrade zlib && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
+COPY front-end/package*.json ./front-end/
 
 WORKDIR /app/front-end
 
 RUN npm install
 
-RUN apk upgrade zlib
+WORKDIR /app
+COPY . .
 
-
+WORKDIR /app/front-end
 RUN npm run build
 
 EXPOSE 4173
