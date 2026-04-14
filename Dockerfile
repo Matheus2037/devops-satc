@@ -1,4 +1,6 @@
-FROM node:20-alpine
+FROM node:20-alpine:3.20.2
+
+RUN apt-get update && apt-get install -y --no-install-recommends zlib1g && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -10,7 +12,6 @@ RUN npm install
 
 RUN apk upgrade zlib
 
-RUN apt-get update && apt-get install -y --no-install-recommends zlib1g && rm -rf /var/lib/apt/lists/*
 
 RUN npm run build
 
