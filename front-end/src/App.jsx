@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
-        <Link to="/" style={{ marginRight: '10px' }}>HomeA</Link> | 
+        <Link to="/" style={{ marginRight: '10px' }}>Home</Link> | 
         <Link to="/sobre" style={{ margin: '0 10px' }}>Sobre</Link> | 
         <Link to="/contato" style={{ marginLeft: '10px' }}>Contato</Link>
       </nav>
