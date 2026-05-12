@@ -1,5 +1,7 @@
 FROM node:20-alpine3.20
 
+RUN npm install -g npm@latest
+
 RUN apk update && \
     apk upgrade --no-cache && \
     rm -rf /var/cache/apk/*
