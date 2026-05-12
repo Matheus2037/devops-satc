@@ -16,7 +16,7 @@ COPY front-end/package*.json ./front-end/
 WORKDIR /app/front-end
 
 # CORREÇÃO 3: Trocamos 'npm install' por 'npm ci'
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 WORKDIR /app
 COPY . .
