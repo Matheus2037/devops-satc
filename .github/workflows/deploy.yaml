@@ -38,6 +38,7 @@ jobs:
           sed -i 's/##DOCKER_USERNAME##/${{ secrets.DOCKER_USERNAME }}/g' k8s/deployment.yaml
           sed -i 's/##K8S_NAMESPACE##/${{ vars.K8S_NAMESPACE }}/g' k8s/deployment.yaml
           sed -i 's/##K8S_TAG##/${{ github.sha }}/g' k8s/deployment.yaml
+          sed -i 's/##K8S_NAMESPACE##/${{ vars.K8S_NAMESPACE }}/g' k8s/hpa.yaml
 
       - name: Criar namespace se não existir
         run: |

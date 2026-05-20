@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path . -Depth 0)",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Skill(update-config)",
+      "Bash(where jq *)",
+      "Bash(powershell -NonInteractive -Command '$j = [Console]::In.ReadToEnd\\(\\) | ConvertFrom-Json; $f = $j.tool_input.file_path; if \\($f -and $f -match \"[/\\\\\\\\\\\\\\\\]front-end[/\\\\\\\\\\\\\\\\].+\\\\\\\\.jsx?$\"\\) { Push-Location front-end; npx eslint --fix $f; $ec = $LASTEXITCODE; Pop-Location; exit $ec }')",
+      "Bash(npx eslint *)"
+    ]
+  }
+}

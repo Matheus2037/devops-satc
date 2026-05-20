@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NonInteractive -Command \"$j = [Console]::In.ReadToEnd() | ConvertFrom-Json; $f = $j.tool_input.file_path; if ($f -and $f -match '[/\\\\]front-end[/\\\\].+\\.jsx?$') { Push-Location front-end; npx eslint --fix $f 2>$null; Pop-Location }\"",
+            "timeout": 30,
+            "statusMessage": "ESLint fixing..."
+          }
+        ]
+      }
+    ]
+  }
+}
