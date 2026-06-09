@@ -24,8 +24,8 @@ data:
           # (Se você gerar uma API key no Kuma, use-a como `password` e deixe o
           #  `username` em branco — mas atenção: ao criar a 1ª API key, a auth
           #  básica do /metrics é desativada de forma permanente.)
-          username: "<seu usuário do Kuma>"
-          password: "<sua senha do Kuma OU a API key>"
+          username: /etc/prometheus/secrets/kuma_user
+          password: /etc/prometheus/secrets/kuma_password
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,10 +54,16 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/prometheus
+            - name: kuma-creds
+              mountPath: /etc/prometheus/secrets
+              readOnly: true
       volumes:
         - name: config
           configMap:
             name: prometheus-config
+        - name: kuma-creds
+          secret:
+            secretName: kuma-metrics-credentials
 ---
 apiVersion: v1
 kind: Service
