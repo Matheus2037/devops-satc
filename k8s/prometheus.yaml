@@ -1,0 +1,74 @@
+# k8s/prometheus.yaml
+# Prometheus que raspa as métricas do Uptime Kuma e serve de fonte de dados pro Grafana.
+# IMPORTANTE: namespace fixo (sem placeholders ##...##), pois o passo de `sed` da
+# pipeline NÃO toca neste arquivo — só em deployment.yaml e hpa.yaml.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: matheus-gastaldi
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 30s
+
+    scrape_configs:
+      - job_name: "uptime-kuma"
+        scheme: http
+        metrics_path: "/metrics"
+        static_configs:
+          - targets: ["kuma.app.devops-satc.online:80"]
+        basic_auth:
+          # Usuário/senha de login do teu Uptime Kuma.
+          # (Se você gerar uma API key no Kuma, use-a como `password` e deixe o
+          #  `username` em branco — mas atenção: ao criar a 1ª API key, a auth
+          #  básica do /metrics é desativada de forma permanente.)
+          username: "<seu usuário do Kuma>"
+          password: "<sua senha do Kuma OU a API key>"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: matheus-gastaldi
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: config
+              mountPath: /etc/prometheus
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: matheus-gastaldi
+  labels:
+    app: prometheus
+spec:
+  selector:
+    app: prometheus
+  ports:
+    - port: 9090
+      targetPort: 9090
