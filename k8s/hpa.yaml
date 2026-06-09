@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: app-satc-hpa
+  name: app-##DOCKER_USERNAME##-hpa
   namespace: ##K8S_NAMESPACE##
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: app-satc
+    name: app-##DOCKER_USERNAME##
   minReplicas: 1
   maxReplicas: 5
   behavior:
