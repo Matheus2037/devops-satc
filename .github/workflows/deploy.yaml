@@ -39,11 +39,18 @@ jobs:
           sed -i 's/##K8S_NAMESPACE##/${{ vars.K8S_NAMESPACE }}/g' k8s/deployment.yaml
           sed -i 's/##K8S_TAG##/${{ github.sha }}/g' k8s/deployment.yaml
           sed -i 's/##K8S_NAMESPACE##/${{ vars.K8S_NAMESPACE }}/g' k8s/hpa.yaml
+          sed -i 's/##DOCKER_USERNAME##/${{ secrets.DOCKER_USERNAME }}/g' k8s/hpa.yaml
+
 
       - name: Criar namespace se não existir
         run: |
           # Cria namespace ${{ vars.K8S_NAMESPACE }} idempotentemente
           kubectl create namespace ${{ vars.K8S_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: (TEMPORÁRIO) Limpar ingress órfão
+        run: |
+          kubectl get ingress -n ${{ vars.K8S_NAMESPACE }}
+          kubectl delete ingress app-satc -n ${{ vars.K8S_NAMESPACE }} --ignore-not-found
 
       - name: Aplicar manifests Kubernetes
         run: |
