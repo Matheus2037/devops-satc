@@ -44,8 +44,15 @@ jobs:
 
       - name: Criar namespace se não existir
         run: |
-          # Cria namespace ${{ vars.K8S_NAMESPACE }} idempotentemente
           kubectl create namespace ${{ vars.K8S_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Criar secret de credenciais do Kuma
+        run: |
+          kubectl create secret generic kuma-metrics-credentials \
+            --namespace ${{ vars.K8S_NAMESPACE }} \
+            --from-literal=kuma_user='${{ secrets.KUMA_METRICS_USER }}' \
+            --from-literal=kuma_password='${{ secrets.KUMA_METRICS_PASSWORD }}' \
+            --dry-run=client -o yaml | kubectl apply -f -
 
       - name: (TEMPORÁRIO) Limpar ingress órfão
         run: |
@@ -54,15 +61,7 @@ jobs:
 
       - name: Aplicar manifests Kubernetes
         run: |
-          # Aplica deployment.yaml e service.yaml do diretÃ³rio k8s/
           kubectl apply -f k8s/ -n ${{ vars.K8S_NAMESPACE }}
-
-      - name: Criar secret de credenciais do Kuma
-        run: |
-          kubectl create secret generic kuma-metrics-credentials \
-            --namespace ${{ vars.K8S_NAMESPACE }} \
-            --from-literal=kuma_password='${{ secrets.KUMA_METRICS_PASSWORD }}' \
-            --dry-run=client -o yaml | kubectl apply -f -
 
       # - name: Aguardar rollout do deployment
       #   run: |
